@@ -36,10 +36,3 @@ expo-router
 react-native-gesture-handler
 react-native-reanimated
 react-native-screens
-
-Next Steps
-
-Add backend APIs for authentication.
-Implement additional screens (Dashboard, Payments, Notices).
-Integrate payment gateways (e.g., Razorpay, requires custom build).
-Enhance UI with custom styles or Tailwind CSS via nativewind.
