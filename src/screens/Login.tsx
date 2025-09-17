@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { UserContext } from '../context/UserContext';
 import CustomInput from '../components/Input';
@@ -33,7 +33,7 @@ export default function Login({ navigation }: Props) {
     try {
       const response = await apiLogin({ email, password });
       setUser({ email, flatNumber: response.flatNumber || 'A-101' });
-      navigation.navigate('Dashboard');
+      navigation.replace('Dashboard'); // Use replace to prevent going back to Login
     } catch (error: any) {
       alert('Login failed: ' + error.message);
     }
@@ -41,6 +41,10 @@ export default function Login({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
+      <Image
+        source={require('../../assets/logo-blc.png')}
+        style={styles.mainLogo}
+      />
       <Text style={styles.title}>Login</Text>
       <CustomInput
         placeholder="Email"
@@ -56,7 +60,7 @@ export default function Login({ navigation }: Props) {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <CustomButton title="Login" onPress={handleLogin} />
+      <CustomButton title="Login" onPress={handleLogin} icon="sign-in" />
       <CustomButton
         title="Register"
         onPress={() => navigation.navigate('Register')}
@@ -69,7 +73,7 @@ export default function Login({ navigation }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: .925,
     padding: SIZES.padding,
     backgroundColor: COLORS.secondary,
     justifyContent: 'center',
@@ -89,4 +93,14 @@ const styles = StyleSheet.create({
   outlineButtonTitle: {
     color: COLORS.primary,
   },
+  mainLogo: {
+    width: 100,
+    height: 90,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+    marginBottom: SIZES.margin * 2,
+    backgroundColor: '#e1eefd',
+    padding: 10,
+    borderRadius: 10,
+  }
 });

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import CustomInput from '../components/Input';
 import CustomButton from '../components/Button';
@@ -18,7 +18,7 @@ interface Props {
   navigation: RegisterScreenNavigationProp;
 }
 
-export default function Registration({ navigation }: Props) {
+export default function Register({ navigation }: Props) {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [flatNumber, setFlatNumber] = useState<string>('');
@@ -35,6 +35,10 @@ export default function Registration({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
+      <Image
+        source={require('../../assets/logo-blc.png')}
+        style={styles.mainLogo}
+      />
       <Text style={styles.title}>Register</Text>
       <CustomInput
         placeholder="Email"
@@ -56,7 +60,13 @@ export default function Registration({ navigation }: Props) {
         value={flatNumber}
         onChangeText={setFlatNumber}
       />
-      <CustomButton title="Register" onPress={handleRegister} />
+      <CustomButton title="Register" onPress={handleRegister} icon="user-plus" />
+      <CustomButton
+        title="Back to Login"
+        onPress={() => navigation.navigate('Login')}
+        style={styles.outlineButton}
+        titleStyle={styles.outlineButtonTitle}
+      />
     </View>
   );
 }
@@ -75,4 +85,22 @@ const styles = StyleSheet.create({
     marginBottom: SIZES.margin * 2,
     color: COLORS.primary,
   },
+  outlineButton: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+  },
+  outlineButtonTitle: {
+    color: COLORS.primary,
+  },
+  mainLogo: {
+    width: 100,
+    height: 90,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+    marginBottom: SIZES.margin * 2,
+    backgroundColor: '#e1eefd',
+    padding: 10,
+    borderRadius: 10,
+  }
 });

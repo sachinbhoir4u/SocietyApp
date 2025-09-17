@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Image } from 'react-native';
 import Login from '../screens/Login';
 import Registration from '../screens/Registration';
+import Dashboard from '../screens/Dashboard';
 import { COLORS } from '../utils/constants';
 
 type RootStackParamList = {
@@ -23,6 +24,8 @@ export default function AppNavigator() {
           headerStyle: { backgroundColor: COLORS.primary },
           headerTintColor: '#fff',
           headerTitleStyle: { fontWeight: 'bold' },
+          headerTitleAlign: 'center',
+          headerLeft: () => null,
           headerTitle: () => (
             <Image
               source={require('../../assets/logo.png')}
@@ -31,8 +34,9 @@ export default function AppNavigator() {
           ),
         }}
       >
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Register" component={Registration} />
+        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+        <Stack.Screen name="Register" component={Registration} options={{ headerShown: false }} />
+        <Stack.Screen name="Dashboard" component={Dashboard} />
       </Stack.Navigator>
     </NavigationContainer>
   );
