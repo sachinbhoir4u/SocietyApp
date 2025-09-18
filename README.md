@@ -1,6 +1,6 @@
 SocietyApp
 A React Native (Expo) app with TypeScript for a cooperative society, allowing flat owners to log in and register.
-Features
+Features - Payments, notices, Raise complaints etc.
 
 User authentication (login/registration)
 TypeScript support for type safety
