@@ -36,3 +36,10 @@ expo-router
 react-native-gesture-handler
 react-native-reanimated
 react-native-screens
+
+Screenshots
+Login Screen
+![login-screen](https://github.com/user-attachments/assets/15b1259a-3751-4520-a718-a89ec2fe82b2)
+
+
+
