@@ -1,10 +1,11 @@
-import React, { useState, useContext } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Image, Alert } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { UserContext } from '../context/UserContext';
+import { useDispatch, useSelector } from 'react-redux';
 import CustomInput from '../components/Input';
 import CustomButton from '../components/Button';
-import { apiLogin } from '../utils/api';
+import { loginUser, clearError } from '../store/slices/userSlice';
+import { RootState, AppDispatch } from '../store';
 import { COLORS, SIZES } from '../utils/constants';
 
 type RootStackParamList = {
@@ -19,23 +20,34 @@ interface Props {
   navigation: LoginScreenNavigationProp;
 }
 
-interface User {
-  email: string;
-  flatNumber: string;
-}
-
 export default function Login({ navigation }: Props) {
-  const { setUser } = useContext(UserContext);
+  const dispatch = useDispatch<AppDispatch>();
+  const { loading, error, currentUser } = useSelector((state: RootState) => state.users);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
+  useEffect(() => {
+    if (currentUser && !loading && !error) {
+      navigation.replace('Dashboard');
+    }
+  }, [currentUser, loading, error, navigation]);
+
+  useEffect(() => {
+    if (error) {
+      console.log('Login error displayed:', error);
+      Alert.alert('Login Failed', error);
+      dispatch(clearError()); 
+    }
+  }, [error, dispatch]);
+
   const handleLogin = async () => {
+    console.log('Attempting login with:', { email });
+    dispatch(clearError());
     try {
-      const response = await apiLogin({ email, password });
-      setUser({ email, flatNumber: response.flatNumber || 'A-101' });
-      navigation.replace('Dashboard'); // Use replace to prevent going back to Login
-    } catch (error: any) {
-      alert('Login failed: ' + error.message);
+      const result = await dispatch(loginUser({ email, password })).unwrap();
+      console.log('Login result:', result);
+    } catch (err) {
+      console.error('Login dispatch error:', err);
     }
   };
 
@@ -60,7 +72,12 @@ export default function Login({ navigation }: Props) {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <CustomButton title="Login" onPress={handleLogin} icon="sign-in" />
+      <CustomButton
+        title="Login"
+        onPress={handleLogin}
+        icon="sign-in"
+        disabled={loading}
+      />
       <CustomButton
         title="Register"
         onPress={() => navigation.navigate('Register')}
@@ -73,7 +90,7 @@ export default function Login({ navigation }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: .925,
+    flex: 0.925,
     padding: SIZES.padding,
     backgroundColor: COLORS.secondary,
     justifyContent: 'center',
@@ -102,5 +119,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#e1eefd',
     padding: 10,
     borderRadius: 10,
-  }
+  },
 });
