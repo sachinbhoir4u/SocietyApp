@@ -159,3 +159,12 @@ const login = async (email: string, password: string) => {
 5. Open a Pull Request.
 
 Please ensure code follows TypeScript conventions and includes appropriate tests.
+
+## Screenshots
+
+![Registration](https://github.com/user-attachments/assets/be6be42d-d304-4e36-a205-60bee3e351f1)
+![Login](https://github.com/user-attachments/assets/825af490-b1c1-4dad-a32f-184e55d1c084)
+![dashboard_](https://github.com/user-attachments/assets/3e63244a-e1b1-4a41-bb36-28245683c1cc)
+
+
+
