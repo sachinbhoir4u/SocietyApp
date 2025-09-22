@@ -10,16 +10,23 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "platforms": [
+      "android"
+    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+      "package": "com.sachinbhoir4u.SocietyApp",
+      "versionCode": 1
+    },
+    "extra": {
+      "eas": {
+        "projectId": "30857ed8-532e-4bde-9e15-e632d4f79384"
       }
     }
   }
 }
-
