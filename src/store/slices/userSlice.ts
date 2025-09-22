@@ -16,8 +16,6 @@ interface User {
   lastLogin?: Date;
   emergencyContact?: string;
   vehicleDetails?: string;
-  // membershipStatus?: 'pending' | 'active' | 'inactive';
-  // societyId?: string;
 }
 
 interface UserState {
@@ -36,7 +34,6 @@ const initialState: UserState = {
   error: null,
 };
 
-// Async thunks for API calls
 export const registerUser = createAsyncThunk(
   'users/register',
   async (
@@ -52,18 +49,6 @@ export const registerUser = createAsyncThunk(
   },
 );
 
-// export const loginUser = createAsyncThunk(
-//   'users/login',
-//   async (credentials: { email: string; password: string }, { rejectWithValue }) => {
-//     try {
-//       const response = await axios.post(`${Config.API_BASE_URL}/auth/login`, credentials);
-//       return response.data.data; // Extract { user, token } from nested response
-//     } catch (error: any) {
-//       return rejectWithValue(error.response?.data?.message || 'Login failed');
-//     }
-//   },
-// );
-
 export const loginUser = createAsyncThunk(
   'users/login',
   async (credentials: { email: string; password: string }, { rejectWithValue }) => {
@@ -75,7 +60,7 @@ export const loginUser = createAsyncThunk(
         return rejectWithValue(response.data.message || 'Login failed');
       }
       console.log('Login response:', response.data);
-      return response.data.data; // { user, token }
+      return response.data.data;
     } catch (error: any) {
       console.error('Login error:', error.message, error.response?.data);
       return rejectWithValue(
@@ -116,7 +101,6 @@ const userSlice = createSlice({
     ) => {
       const user = state.users.find((u) => u.id === action.payload.id);
       if (user) {
-        // user.membershipStatus = action.payload.status;
         user.role = action.payload.status;
       }
     },
@@ -125,7 +109,6 @@ const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Register
     builder
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
@@ -140,10 +123,7 @@ const userSlice = createSlice({
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-      });
-
-    // Login
-    builder
+      })
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -159,10 +139,7 @@ const userSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-      });
-
-    // Logout
-    builder
+      })
       .addCase(logoutUser.pending, (state) => {
         state.loading = true;
         state.error = null;
