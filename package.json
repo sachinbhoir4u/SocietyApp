@@ -6,7 +6,9 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "build:android:dev": "eas build --platform android --profile development",
+    "build:android:prod": "eas build --platform android --profile production"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
@@ -26,7 +28,8 @@
     "react-dom": "19.1.0",
     "react-native-safe-area-context": "5.6.1",
     "expo-linking": "8.0.8",
-    "react-native-worklets": "0.5.1"
+    "react-native-worklets": "0.5.1",
+    "eas-cli": "^10.2.2"
   },
   "devDependencies": {
     "@types/react": "~19.1.0",
