@@ -40,10 +40,11 @@ react-native-screens
 Screenshots
 
 Login Screen
+![Dashboard](https://github.com/user-attachments/assets/4e796a16-5bd5-4983-8e21-84e066d43c4b)
+![Registration](https://github.com/user-attachments/assets/f4e2800b-0d3d-434f-88bf-e91c0291cf5e)
+![Login](https://github.com/user-attachments/assets/61955d79-187e-4f18-9ad9-2c09f52ad995)
 
-![login-screen_](https://github.com/user-attachments/assets/48a9321b-b0ff-4fea-ac49-582e8f19f2d0)
-![dashboard](https://github.com/user-attachments/assets/97665007-9675-4663-9915-d6b5b0c2e85f)
-![registration-screen](https://github.com/user-attachments/assets/d6aefe80-04ef-4977-9b65-dbf8bceab0b0)
+
 
 
 
