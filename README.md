@@ -33,9 +33,6 @@ Dependencies
 @expo/vector-icons
 axios
 expo-router
-react-native-gesture-handler
-react-native-reanimated
-react-native-screens
 
 Screenshots
 
@@ -44,10 +41,3 @@ Login Screen
 ![login-screen_](https://github.com/user-attachments/assets/48a9321b-b0ff-4fea-ac49-582e8f19f2d0)
 ![dashboard](https://github.com/user-attachments/assets/97665007-9675-4663-9915-d6b5b0c2e85f)
 ![registration-screen](https://github.com/user-attachments/assets/d6aefe80-04ef-4977-9b65-dbf8bceab0b0)
-
-
-
-
-
-
-
