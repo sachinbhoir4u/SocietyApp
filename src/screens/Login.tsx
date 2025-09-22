@@ -25,6 +25,7 @@ export default function Login({ navigation }: Props) {
   const { loading, error, currentUser } = useSelector((state: RootState) => state.users);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   useEffect(() => {
     if (currentUser && !loading && !error) {
@@ -70,7 +71,9 @@ export default function Login({ navigation }: Props) {
         icon="lock"
         value={password}
         onChangeText={setPassword}
-        secureTextEntry
+        secureTextEntry={!showPassword}
+        rightIcon={showPassword ? 'eye-slash' : 'eye'}
+        onRightIconPress={() => setShowPassword(!showPassword)}
       />
       <CustomButton
         title="Login"

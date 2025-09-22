@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, ActivityIndicator } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useDispatch, useSelector } from 'react-redux';
+import { FontAwesome } from '@expo/vector-icons';
 import CustomInput from '../components/Input';
 import CustomButton from '../components/Button';
-import { apiRegister } from '../utils/api';
+import { registerUser } from '../store/slices/userSlice';
+import { RootState, AppDispatch } from '../store';
 import { COLORS, SIZES } from '../utils/constants';
 
 type RootStackParamList = {
@@ -19,17 +22,57 @@ interface Props {
 }
 
 export default function Register({ navigation }: Props) {
+  const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
   const [flatNumber, setFlatNumber] = useState<string>('');
+  const [wing, setWing] = useState<string>('');
+  const [floor, setFloor] = useState<string>('');
+  const [emergencyContact, setEmergencyContact] = useState<string>('');
+  const [vehicleDetails, setVehicleDetails] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const { loading, error } = useSelector((state: RootState) => state.users);
+
+  const handlePhoneChange = (text: string) => {
+    // Allow only digits and limit to 10 characters
+    const numericText = text.replace(/[^0-9]/g, '').slice(0, 10);
+    setPhone(numericText);
+  };
 
   const handleRegister = async () => {
     try {
-      await apiRegister({ email, password, flatNumber });
-      alert('Registration successful! Please login.');
+      // Validate required fields
+      if (!name || !email || !password || !phone || !flatNumber || !wing || !floor) {
+        alert('Please fill in all required fields');
+        return;
+      }
+
+      // Validate phone number length
+      if (phone.length !== 10) {
+        alert('Phone number must be exactly 10 digits');
+        return;
+      }
+
+      const userData = {
+        name,
+        email,
+        password,
+        phone,
+        flatNumber,
+        wing,
+        floor,
+        emergencyContact: emergencyContact || undefined,
+        vehicleDetails: vehicleDetails || undefined,
+      };
+
+      await dispatch(registerUser(userData)).unwrap();
+      alert('Registration successful! Please check your email for verification.');
       navigation.navigate('Login');
-    } catch (error: any) {
-      alert('Registration failed: ' + error.message);
+    } catch (err: any) {
+      alert(error || 'Registration failed. Please try again.');
     }
   };
 
@@ -40,6 +83,14 @@ export default function Register({ navigation }: Props) {
         style={styles.mainLogo}
       />
       <Text style={styles.title}>Register</Text>
+      {loading && <ActivityIndicator size="large" color={COLORS.primary} />}
+      {error && <Text style={styles.errorText}>{error}</Text>}
+      <CustomInput
+        placeholder="Full Name"
+        icon="user"
+        value={name}
+        onChangeText={setName}
+      />
       <CustomInput
         placeholder="Email"
         icon="envelope"
@@ -52,7 +103,17 @@ export default function Register({ navigation }: Props) {
         icon="lock"
         value={password}
         onChangeText={setPassword}
-        secureTextEntry
+        secureTextEntry={!showPassword}
+        rightIcon={showPassword ? 'eye-slash' : 'eye'}
+        onRightIconPress={() => setShowPassword(!showPassword)}
+      />
+      <CustomInput
+        placeholder="Phone Number"
+        icon="phone"
+        value={phone}
+        onChangeText={handlePhoneChange}
+        keyboardType="phone-pad"
+        maxLength={10}
       />
       <CustomInput
         placeholder="Flat Number"
@@ -60,12 +121,50 @@ export default function Register({ navigation }: Props) {
         value={flatNumber}
         onChangeText={setFlatNumber}
       />
-      <CustomButton title="Register" onPress={handleRegister} icon="user-plus" />
+      <View style={styles.rowContainer}>
+        <View style={styles.inputWrapper}>
+          <CustomInput
+            placeholder="Wing"
+            icon="building"
+            value={wing}
+            onChangeText={setWing}
+          />
+        </View>
+        <View style={styles.inputWrapper}>
+          <CustomInput
+            placeholder="Floor"
+            icon="sort-numeric-up"
+            value={floor}
+            onChangeText={setFloor}
+            keyboardType="numeric"
+          />
+        </View>
+      </View>
+      {/* <CustomInput
+        placeholder="Emergency Contact (Optional)"
+        icon="phone-alt"
+        value={emergencyContact}
+        onChangeText={setEmergencyContact}
+        keyboardType="phone-pad"
+      />
+      <CustomInput
+        placeholder="Vehicle Details (Optional)"
+        icon="car"
+        value={vehicleDetails}
+        onChangeText={setVehicleDetails}
+      /> */}
+      <CustomButton
+        title="Register"
+        onPress={handleRegister}
+        icon="user-plus"
+        disabled={loading}
+      />
       <CustomButton
         title="Back to Login"
         onPress={() => navigation.navigate('Login')}
         style={styles.outlineButton}
         titleStyle={styles.outlineButtonTitle}
+        disabled={loading}
       />
     </View>
   );
@@ -85,10 +184,16 @@ const styles = StyleSheet.create({
     marginBottom: SIZES.margin * 2,
     color: COLORS.primary,
   },
+  errorText: {
+    color: COLORS.error || 'red',
+    textAlign: 'center',
+    marginBottom: SIZES.margin,
+  },
   outlineButton: {
     backgroundColor: 'transparent',
     borderWidth: 1,
     borderColor: COLORS.primary,
+    marginTop: SIZES.margin,
   },
   outlineButtonTitle: {
     color: COLORS.primary,
@@ -102,5 +207,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#e1eefd',
     padding: 10,
     borderRadius: 10,
-  }
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: SIZES.margin,
+  },
+  inputWrapper: {
+    flex: 1,
+    marginHorizontal: SIZES.margin / 2,
+  },
 });
