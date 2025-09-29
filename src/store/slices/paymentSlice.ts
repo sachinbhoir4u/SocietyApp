@@ -1,16 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-// import { fetchPendingBills, createPaymentOrder } from '../../api/payments';
 import { Config } from '../../config/apiConfig';
 
 export const fetchPendingBills = async (token: string) => {
-  const response = await fetch(`${Config.API_BASE_URL}/api/payments/bills/pending`, {
+  const response = await fetch(`${Config.API_BASE_URL}/payments/bills/pending`, {
     headers: { Authorization: `Bearer ${token}` }
   });
   return response.json();
 };
 
 export const createPaymentOrder = async (token: string, { billId, amount }: { billId: string; amount: number }) => {
-  const response = await fetch(`${Config.API_BASE_URL}/api/payments/create-order`, {
+  const response = await fetch(`${Config.API_BASE_URL}/payments/create-order`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -18,17 +17,19 @@ export const createPaymentOrder = async (token: string, { billId, amount }: { bi
     },
     body: JSON.stringify({ billId, amount })
   });
+  console.log("Create payment order response:", response);
   return response.json();
 };
 
 export const getPendingBills = createAsyncThunk('payments/getPendingBills', async (_, { getState }) => {
-  const { auth } = getState() as any;
-  return fetchPendingBills(auth.token);
+  const { users } = getState() as any;
+  return fetchPendingBills(users.token);
 });
 
 export const makePayment = createAsyncThunk('payments/makePayment', async ({ billId, amount }: any, { getState }) => {
-  const { auth } = getState() as any;
-  return createPaymentOrder(auth.token, { billId, amount });
+  const { users } = getState() as any;
+  console.log("Auth make payment", users)
+  return createPaymentOrder(users.token, { billId, amount });
 });
 
 const paymentSlice = createSlice({
