@@ -2,7 +2,7 @@ const ENV = process.env.NODE_ENV || 'development';
 
 const API_URLS = {
   development: 'http://192.168.0.116:5001/api',//'http://localhost:5000/api',
-  production: 'https://api.societyapp.com',
+  production: 'https://society-apis.onrender.com/api',
 };
 
 export const Config = {
