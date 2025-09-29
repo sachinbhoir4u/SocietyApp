@@ -11,6 +11,7 @@ type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   Dashboard: undefined;
+  Payment: undefined;
 };
 
 type DashboardScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Dashboard'>;
@@ -55,7 +56,7 @@ export default function Dashboard({ navigation }: Props) {
         <ActionCard
           title="Payments"
           icon="money"
-          onPress={() => Alert.alert('Payments screen coming soon!')}
+          onPress={() => navigation.navigate('Payment')}
         />
         <ActionCard
           title="Notices"
