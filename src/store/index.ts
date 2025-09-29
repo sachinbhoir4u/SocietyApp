@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './slices/userSlice';
+import paymentReducer from './slices/paymentSlice';
 
 export const store = configureStore({
   reducer: {
     users: userReducer,
+    payments: paymentReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
